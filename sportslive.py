@@ -236,7 +236,7 @@ class SportsLive:
 
         for f,k in zip(keyfields,keywords):
             print(f + ":" + k)
-            where += "{0} like '%{1}%' AND".format(f, k)
+            where += "{0} like '%{1}%' AND ".format(f, k)
 
         myquery = """
                     SELECT TOP 1 {3}

@@ -246,7 +246,10 @@ class SportsLive:
                   """.format(day, where, table, field)
         print(myquery)
         query_job = client.query(myquery)
-        results = query_job.result()  # Waits for job to complete.
+        try:
+            results = query_job.result()  # Waits for job to complete.
+        except exception as e:
+            print(e.args)
         print(results)
         result_list = list(results)
 

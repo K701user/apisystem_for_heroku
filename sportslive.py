@@ -9,7 +9,6 @@ import re
 import requests
 
 from janome.tokenizer import Tokenizer
-from requests_oauthlib import OAuth1Session
 from google.cloud import bigquery
 from google.oauth2 import service_account
 

@@ -79,10 +79,13 @@ def processRequest(req):
         team2 = parameters.get("BaseballTeamName_for_Japan1")
     except:
         pass
-    if date is None:
-        date = datetime.datetime.now().strftime('%Y%m%d')
-    else:
-        date = date.strftime('%Y%m%d')
+    try:
+        if date is None:
+            date = datetime.datetime.now().strftime('%Y%m%d')
+        else:
+            date = date[0].replace('-', '')
+    except:
+        pass
     print(actiontype)
     if actiontype == "reply_to_player_record":
         res = SL.execute_sql(date, name, "bplayerrecord", "name", ["name", "record"])

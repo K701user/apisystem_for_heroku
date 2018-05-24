@@ -53,18 +53,22 @@ def processRequest(req):
     parameters = results.get("parameters")
     try:
         name = parameters.get("name")
+        print(name)
     except:
         pass
     try:
         date = parameters.get("date")
+        print(date)
     except:
         pass
     try:
         team1 = parameters.get("SoccerTeamName_for_Japan")
+        print(team1)
     except:
         pass
     try:
         team2 = parameters.get("SoccerTeamName_for_Japan1")
+        print(team2)
     except:
         pass
     try:
@@ -79,7 +83,7 @@ def processRequest(req):
         date = datetime.datetime.now().strftime('%Y%m%d')
     else:
         date = date.strftime('%Y%m%d')
-
+    print(actiontype)
     if actiontype == "reply_to_player_record":
         res = SL.execute_sql(date, name, "bplayerrecord", "name", ["name", "record"])
     elif actiontype == "reply_to_news":

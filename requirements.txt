@@ -3,4 +3,5 @@ pandas==0.22.0
 Flask==0.10.1
 future==0.16.0
 google-cloud-bigquery==1.1.0
+google-cloud-storage==1.8.0
 janome==0.3.6

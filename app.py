@@ -84,8 +84,10 @@ def processRequest(req):
     try:
         if date is None:
             date = datetime.datetime.now().strftime('%Y%m%d')
-        else:
+        elif type(date) = list:            
             date = date[0].replace('-', '')
+        else:
+            date = date.replace('-', '')
     except:
         pass
     print(actiontype)

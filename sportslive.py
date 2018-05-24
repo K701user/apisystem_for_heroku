@@ -212,7 +212,7 @@ class SportsLive:
                     WHERE {3} like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                     ORDER BY TIME AS DESC
                   """.format(day, keyword, table, keyfield, field)
-
+        print(myquery)
         query_job = client.query(myquery)
         results = query_job.result()  # Waits for job to complete.
         result_list = list(results)
@@ -243,7 +243,7 @@ class SportsLive:
                     WHERE {1} _PARTITIONTIME = TIMESTAMP('{0}')
                     ORDER BY TIME AS DESC
                   """.format(day, where, table, field)
-
+        print(myquery)
         query_job = client.query(myquery)
         results = query_job.result()  # Waits for job to complete.
         result_list = list(results)

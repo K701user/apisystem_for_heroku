@@ -235,6 +235,7 @@ class SportsLive:
             field = ",".join(fields)
 
         for f,k in zip(keyfields,keywords):
+            print(f + ":" + k)
             where += "{0} like '%{1}%' AND".format(f, k)
 
         myquery = """

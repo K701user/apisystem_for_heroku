@@ -72,11 +72,13 @@ def processRequest(req):
     except:
         pass
     try:
-        team1 = parameters.get("BaseballTeamName_for_Japan")
+        if team1 is None:
+            team1 = parameters.get("BaseballTeamName_for_Japan")
     except:
         pass
     try:
-        team2 = parameters.get("BaseballTeamName_for_Japan1")
+        if team2 is None:
+            team2 = parameters.get("BaseballTeamName_for_Japan1")
     except:
         pass
     try:

@@ -8,7 +8,6 @@ import re
 
 import requests
 
-from bs4 import BeautifulSoup
 from janome.tokenizer import Tokenizer
 from requests_oauthlib import OAuth1Session
 from google.cloud import bigquery

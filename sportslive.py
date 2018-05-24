@@ -247,6 +247,7 @@ class SportsLive:
         print(myquery)
         query_job = client.query(myquery)
         results = query_job.result()  # Waits for job to complete.
+        print(results)
         result_list = list(results)
 
         output_text = str(result_list[0][0]) + "は" + str(result_list[0][1]) + "でした"

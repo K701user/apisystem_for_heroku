@@ -209,7 +209,7 @@ class SportsLive:
         myquery = """
                     SELECT {4}
                     FROM sportsagent.{2}
-                    WHERE {3} like '%{1}%' AND DATE = TIMESTAMP('{0}')
+                    WHERE {3} like '%{1}%' AND DATE = '{0}'
                     ORDER BY TIME DESC
                   """.format(day, keyword, table, keyfield, field)
         print(myquery)
@@ -241,7 +241,7 @@ class SportsLive:
         myquery = """
                     SELECT {3}
                     FROM sportsagent.{2}
-                    WHERE {1} DATE = TIMESTAMP('{0}')
+                    WHERE {1} DATE = '{0}'
                     ORDER BY TIME DESC
                   """.format(day, where, table, field)
         print(myquery)

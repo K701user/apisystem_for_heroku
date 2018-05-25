@@ -207,10 +207,10 @@ class SportsLive:
             field = ",".join(fields)
 
         myquery = """
-                    SELECT TOP 1 {4}
+                    SELECT {4}
                     FROM sportsagent.{2}
-                    WHERE {3} like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
-                    ORDER BY TIME AS DESC
+                    WHERE {3} like '%{1}%' AND DATE = TIMESTAMP('{0}')
+                    ORDER BY TIME DESC
                   """.format(day, keyword, table, keyfield, field)
         print(myquery)
         query_job = client.query(myquery)
@@ -239,10 +239,10 @@ class SportsLive:
             where += "{0} like '%{1}%' AND ".format(f, k)
 
         myquery = """
-                    SELECT TOP 1 {3}
+                    SELECT {3}
                     FROM sportsagent.{2}
-                    WHERE {1} _PARTITIONTIME = TIMESTAMP('{0}')
-                    ORDER BY TIME AS DESC
+                    WHERE {1} DATE = TIMESTAMP('{0}')
+                    ORDER BY TIME DESC
                   """.format(day, where, table, field)
         print(myquery)
 

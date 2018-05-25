@@ -245,8 +245,9 @@ class SportsLive:
                     ORDER BY TIME AS DESC
                   """.format(day, where, table, field)
         print(myquery)
-        query_job = client.query(myquery)
+
         try:
+            query_job = client.query(myquery)
             results = query_job.result()  # Waits for job to complete.
         except exception as e:
             print(e.args)

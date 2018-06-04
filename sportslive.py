@@ -201,7 +201,7 @@ class SportsLive:
         return encode_json_data
 
     @staticmethod
-    def execute_sql(day, keyword, table, keyfield, fields, debug=False):
+    def execute_sql(day=None, keyword, table, keyfield, fields, debug=False):
         news_dict = {}
         output_text = ""
 
@@ -228,7 +228,7 @@ class SportsLive:
         return json_dict
 
     @staticmethod
-    def execute_sql2(day, keywords, table, keyfields, fields, debug=False):
+    def execute_sql2(day=None, keywords, table, keyfields, fields, debug=False):
         news_dict = {}
         output_text = ""
         where = ""

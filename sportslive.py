@@ -261,7 +261,7 @@ class SportsLive:
         if day is not None and day != "":
             myquery += " DATE = '{0}'".format(day)
             
-        myquery += " ORDER BY TIME DESC"
+        myquery += " ORDER BY date,TIME DESC"
         
         print(myquery)
 

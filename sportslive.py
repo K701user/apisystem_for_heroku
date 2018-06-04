@@ -204,7 +204,9 @@ class SportsLive:
     def execute_sql(keyword, table, keyfield, fields, debug=False, day=None):
         news_dict = {}
         output_text = ""
-
+        
+        print("day = {}".format(day))
+        
         if type(fields) is list:
             field = ",".join(fields)
 
@@ -235,12 +237,15 @@ class SportsLive:
         output_text = ""
         where = ""
 
+        print("day = {}".format(day))
+        
         if type(fields) is list:
             field = ",".join(fields)
 
         for f,k in zip(keyfields,keywords):
             print(f + ":" + k)
             where += "{0} like '%{1}%' AND ".format(f, k)
+            where = where[:-4]
 
         myquery = """
                     SELECT {2}
@@ -250,8 +255,6 @@ class SportsLive:
         print(myquery)
         if day is not None and day != "":
             myquery += " DATE = '{0}'".format(day)
-        else:
-            myquery = myquery[:-4]
             
         myquery += " ORDER BY TIME DESC"
         

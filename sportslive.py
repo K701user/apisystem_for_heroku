@@ -250,7 +250,7 @@ class SportsLive:
         for f,k in zip(keyfields,keywords):
             print(f + ":" + k)
             where += "{0} like '%{1}%' AND ".format(f, k)
-            where = where[:-4]
+        where = where[:-4]
 
         myquery = """
                     SELECT {2}

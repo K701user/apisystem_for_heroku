@@ -251,9 +251,10 @@ class SportsLive:
             results = query_job.result()  # Waits for job to complete.
         except exception as e:
             print(e.args)
-        print(results)
+        
         result_list = list(results)
-
+        print(results_list)
+        print(results_list[0][0])        
         output_text = str(result_list[0][0]) + "は" + str(result_list[0][1]) + "でした"
 
         json_dict = {"speech": output_text,

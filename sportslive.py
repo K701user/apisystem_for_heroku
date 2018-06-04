@@ -148,14 +148,16 @@ class SportsLive:
             myquery = """
                         SELECT name,record as text
                         FROM sportsagent.bplayerrecord
-                        WHERE name like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
-                      """.format(day, str(keyword))
+                        WHERE name like '%{0}%'
+                      """.format(str(keyword))
         else:
             myquery = """
                         SELECT name,record as text
                         FROM sportsagent.bplayerrecord
-                        WHERE name like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
-                      """.format(day, str(keyword))
+                        WHERE name like '%{0}%'
+                      """.format(str(keyword))
+        if day is not None:
+            myquery += " AND _PARTITIONTIME = TIMESTAMP('{0}')".format(day)
 
         query_job = client.query(myquery)
         results = query_job.result()  # Waits for job to complete.

@@ -212,10 +212,10 @@ class SportsLive:
                     SELECT {3}
                     FROM sportsagent.{1}
                     WHERE {2} like '%{0}%'
-                    ORDER BY TIME DESC
                   """.format(keyword, table, keyfield, field)
         if day is not None:
             myquery += " AND DATE = '{0}'".format(day)
+        myquery +=  " ORDER BY TIME DESC"
         print(myquery)
         query_job = client.query(myquery)
         results = query_job.result()  # Waits for job to complete.
@@ -246,12 +246,14 @@ class SportsLive:
                     SELECT {2}
                     FROM sportsagent.{1}
                     WHERE {0}
-                    ORDER BY TIME DESC
                   """.format(where, table, field)
         if day is not None:
             myquery += " DATE = '{0}'".format(day)
         else:
             myquery = myquery[:-4]
+            
+        query += "ORDER BY TIME DESC"
+        
         print(myquery)
 
         try:

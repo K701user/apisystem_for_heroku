@@ -247,12 +247,13 @@ class SportsLive:
                     FROM sportsagent.{1}
                     WHERE {0}
                   """.format(where, table, field)
+        print(myquery)
         if day is not None:
             myquery += " DATE = '{0}'".format(day)
         else:
             myquery = myquery[:-4]
             
-        query += "ORDER BY TIME DESC"
+        myquery += " ORDER BY TIME DESC"
         
         print(myquery)
 

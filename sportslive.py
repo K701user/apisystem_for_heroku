@@ -1,4 +1,4 @@
-# coding=utf-8
+ｒ# coding=utf-8
 import csv
 import calendar
 import datetime
@@ -228,7 +228,7 @@ class SportsLive:
                    
         result_list = list(results)
 
-        output_text = str(result_list[0][0]) + "は" + str(result_list[0][1]) + "でした"
+        output_text = str(keyword) + "は" + str(result_list[0][1]) + "でした"
 
         json_dict = {"speech": output_text,
                      "displayText": output_text,

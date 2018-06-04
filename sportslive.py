@@ -213,7 +213,7 @@ class SportsLive:
                     FROM sportsagent.{1}
                     WHERE {2} like '%{0}%'
                   """.format(keyword, table, keyfield, field)
-        if day is not None:
+        if day is not None and day != "":
             myquery += " AND DATE = '{0}'".format(day)
         myquery +=  " ORDER BY TIME DESC"
         print(myquery)
@@ -248,7 +248,7 @@ class SportsLive:
                     WHERE {0}
                   """.format(where, table, field)
         print(myquery)
-        if day is not None:
+        if day is not None and day != "":
             myquery += " DATE = '{0}'".format(day)
         else:
             myquery = myquery[:-4]

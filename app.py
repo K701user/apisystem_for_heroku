@@ -92,7 +92,7 @@ def processRequest(req):
     if actiontype == "reply_to_player_record":
         res = SL.execute_sql(name, "bplayerrecord", "name", ["name", "record"], day=date)
     elif actiontype == "reply_to_news":
-        res = SL.execute_sql(name, "newsrecord", "name", ["title", "row2_text"], day=date)
+        res = SL.execute_sql(name, "newsrecord", "title", ["title", "row2_text"], day=date)
     elif actiontype == "reply_to_soccer_score" or actiontype == "reply_to_baseball_score":
         res = SL.execute_sql2([team1, team2],"scorerecord", ["team1", "team2"], ["team1", "team2", "score"], day=date)
     else:

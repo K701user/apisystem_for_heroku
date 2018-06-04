@@ -272,8 +272,8 @@ class SportsLive:
             print(e.args)
         
         result_list = list(results)
-        print(results_list)
-        print(results_list[0][0])        
+        print(result_list)
+        print(result_list[0][0])        
         output_text = str(result_list[0][0]) + "は" + str(result_list[0][1]) + "でした"
 
         json_dict = {"speech": output_text,

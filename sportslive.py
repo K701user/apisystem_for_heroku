@@ -209,11 +209,13 @@ class SportsLive:
             field = ",".join(fields)
 
         myquery = """
-                    SELECT {4}
-                    FROM sportsagent.{2}
-                    WHERE {3} like '%{1}%' AND DATE = '{0}'
+                    SELECT {3}
+                    FROM sportsagent.{1}
+                    WHERE {2} like '%{0}%'
                     ORDER BY TIME DESC
-                  """.format(day, keyword, table, keyfield, field)
+                  """.format(keyword, table, keyfield, field)
+        if day is not None:
+            myquery += " AND DATE = '{0}'".format(day)
         print(myquery)
         query_job = client.query(myquery)
         results = query_job.result()  # Waits for job to complete.
@@ -241,11 +243,15 @@ class SportsLive:
             where += "{0} like '%{1}%' AND ".format(f, k)
 
         myquery = """
-                    SELECT {3}
-                    FROM sportsagent.{2}
-                    WHERE {1} DATE = '{0}'
+                    SELECT {2}
+                    FROM sportsagent.{1}
+                    WHERE {0}
                     ORDER BY TIME DESC
-                  """.format(day, where, table, field)
+                  """.format(where, table, field)
+        if day is not None:
+            myquery += " DATE = '{0}'".format(day)
+        else:
+            myquery = myquery[:-4]
         print(myquery)
 
         try:

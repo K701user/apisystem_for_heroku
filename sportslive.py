@@ -219,8 +219,13 @@ class SportsLive:
             myquery += " AND DATE = '{0}'".format(day)
         myquery +=  " ORDER BY TIME DESC"
         print(myquery)
-        query_job = client.query(myquery)
-        results = query_job.result()  # Waits for job to complete.
+        
+        try:
+            query_job = client.query(myquery)
+            results = query_job.result()  # Waits for job to complete.
+        except Exception as e:
+            print(e.args)
+                   
         result_list = list(results)
 
         output_text = str(result_list[0][0]) + "は" + str(result_list[0][1]) + "でした"
@@ -263,7 +268,7 @@ class SportsLive:
         try:
             query_job = client.query(myquery)
             results = query_job.result()  # Waits for job to complete.
-        except exception as e:
+        except Exception as e:
             print(e.args)
         
         result_list = list(results)

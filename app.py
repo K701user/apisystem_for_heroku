@@ -100,6 +100,146 @@ def processRequest(req):
 
     return res
 
+@app.route('/news-loader', methods=['GET'])
+def newsloader():
+    json_dict = {}
+    query = request.args.get('query')
+    querylist = query.split('_')
+    query = querylist[0]
+    day = None
+    rowcount = None
+    if len(querylist) >= 2:
+        rowcount = int(querylist[1])
+    if len(querylist) >= 3:
+        day = querylist[2]
+    
+    try:    
+        if query is None:
+            return 'No provided.', 400
+        if rowcount is None:
+            rowcount = 2
+        if day is None:
+            day = datetime.date.today()
+            tdatetime = day.strftime('%Y-%m-%d')
+        else:
+            tdatetime = day
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':"format miss"
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+    
+    try:
+        result = SL.news_loader(query, rowcount, tdatetime)
+        result = json.dumps(result, indent=4)
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'args':e.args,
+                         'date':tdatetime    
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+        
+    except:
+        json_dict.update({'error':
+                         {
+                         'date':"aaaaa"
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+    
+    if result is None:
+        return 'not found : %s' % query, 400
+    return result, 200
+
+
+@app.route('/debug/news-loader', methods=['GET'])
+def newsloader_debug():
+    """Given an query, return that news debug mode."""
+    query = request.args.get('query')
+    querylist = query.split('_')
+    query = querylist[0]
+    day = None
+    rowcount = None
+    if len(querylist) >= 2:
+        rowcount = int(querylist[1])
+    if len(querylist) >= 3:
+        day = querylist[2]
+    json_dict = {}
+
+    if query is None:
+        return 'No provided.', 400
+    if rowcount is None:
+        rowcount = 2
+    if day is None:
+        day = datetime.date.today()
+        tdatetime = day.strftime('%Y-%m-%d')
+    else:
+        tdatetime = day
+    result = SL.news_loader(query, rowcount, tdatetime, debug=True)
+    result = json.dumps(result, indent=4)
+    if result is None:
+        return 'not found : %s' % query, 400
+    return result, 200
+
+
+@app.route('/player-loader', methods=['GET'])
+def playerloader():
+    """Given an query, return that news."""
+    query = request.args.get('query')
+    querylist = query.split('_')
+    query = querylist[0]
+    day = None
+    if len(querylist) > 2:
+        day = querylist[1]
+    json_dict = {}
+    
+    if query is None:
+        return 'No provided.', 400
+    if day is None:
+        day = datetime.date.today()
+        tdatetime = day.strftime('%Y-%m-%d')
+    else:
+        tdatetime = day
+        
+    result = SL.player_loader(query, tdatetime)
+    result = json.dumps(result, indent=4)
+    if result is None:
+        return 'not found : %s' % query, 400
+    return result, 200
+
+
+@app.route('/debug/player-loader', methods=['GET'])
+def playerloader_debug():
+    """Given an query, return that news debug mode."""
+    query = request.args.get('query')
+    querylist = query.split('_')
+    query = querylist[0]
+    day = None
+    if len(querylist) > 2:
+        day = querylist[1]
+    json_dict = {}
+
+    if query is None:
+        return 'No provided.', 400
+    if day is None:
+        day = datetime.date.today()
+        day = day.strftime('%Y%m%d')
+        tdatetime = day.strftime('%Y-%m-%d')
+    else:
+        tdatetime = day        
+    result = SL.player_loader(query, tdatetime, debug=True)
+    result = json.dumps(result, indent=4)
+    if result is None:
+        return 'not found : %s' % query, 400
+    return result, 200
+
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))

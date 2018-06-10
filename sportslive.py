@@ -12,8 +12,8 @@ from janome.tokenizer import Tokenizer
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
-json_key = 'sports-agent-9947da5a2148.json'
-client = bigquery.Client.from_service_account_json(json_key, project='deep-equator-204407')
+json_key = 'continual-grin-206507-54b15b168106.json'
+client = bigquery.Client.from_service_account_json(json_key, project='continual-grin-206507')
 
 player_record = {}
 months = {}

@@ -261,7 +261,7 @@ class SportsLive:
                   """.format(where, table, field)
         print(myquery)
         if day is not None and day != "":
-            myquery += " DATE = '{0}'".format(day)
+            myquery += " AND DATE = '{0}'".format(day)
             
         myquery += " ORDER BY date,TIME DESC"
         

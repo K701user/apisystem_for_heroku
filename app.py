@@ -47,6 +47,66 @@ def webhook():
     return r
 
 
+@app.route('/load-sql', methods=['POST'])
+def load_sql():
+    req = request.args.get('query')
+    querylist = req.split('_')
+    res = loadsqlRequest(querylist)
+    res = json.dumps(res, indent=4)
+    r = make_response(res)
+    r.headers['Content-Type'] = 'application/json'
+    return r
+
+
+def loadsqlRequest(req):
+    reqtype = None
+    q1 = None
+    q2 = None
+    date = None
+    
+    try:
+        reqtype = req[0]
+    except:
+        pass
+    try:
+        q1 = req[1]
+    except:
+        pass
+    try:
+        q2 = req[2]
+    except:
+        pass
+    try:
+        date = req[3]
+    except:
+        pass
+    try:
+        if date is None:
+            date = q2
+            if date is None:
+                date = datetime.date.today().strftime('%Y%m%d') 
+    except:
+        pass
+    try:
+        if type(date) is list:            
+            date = date[0].replace('-', '')
+        else:
+            date = date.replace('-', '')
+    except:
+        pass
+    
+    if reqtype == "p":
+        res = SL.execute_sql(q1, "bplayerrecord", "name", ["name", "record"], day=date)
+    elif reqtype == "n":
+        res = SL.execute_sql(q1, "newsrecord", "title", ["title", "row2_text"], day=date)
+    elif reqtype == "s":
+        res = SL.execute_sql2([q1, q2],"scorerecord", ["team1", "team2"], ["team1", "team2", "score"], day=date)
+    else:
+        return {}
+
+    return res
+
+
 def processRequest(req):
     actiontype = req.get("result").get("action")
     results = req.get("result")

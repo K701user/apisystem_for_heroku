@@ -47,7 +47,7 @@ def webhook():
     return r
 
 
-@app.route('/load-sql', methods=['POST'])
+@app.route('/load-sql', methods=['GET'])
 def load_sql():
     req = request.args.get('query')
     querylist = req.split('_')

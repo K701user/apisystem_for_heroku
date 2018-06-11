@@ -126,7 +126,7 @@ def newsloader():
     except:
         json_dict.update({'error':
                          {
-                             'text':querylist
+                             'text':query
                          }}
                          )
         encode_json_data = json.dumps(json_dict)

@@ -126,9 +126,7 @@ def newsloader():
     except:
         json_dict.update({'error':
                          {
-                             'text':str(query),
-                             'day':str(tdatetime),
-                             'rc':str(rowcount)
+                             'text':querylist
                          }}
                          )
         encode_json_data = json.dumps(json_dict)

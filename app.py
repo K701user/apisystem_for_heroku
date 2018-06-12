@@ -95,15 +95,18 @@ def loadsqlRequest(req):
     except:
         pass
     
-    if reqtype == "p":
-        res = SL.execute_sql(q1, "bplayerrecord", "name", ["name", "record"], day=date)
-    elif reqtype == "n":
-        res = SL.execute_sql(q1, "newsrecord", "title", ["title", "row2_text"], day=date)
-    elif reqtype == "s":
-        res = SL.execute_sql2([q1, q2],"scorerecord", ["team1", "team2"], ["team1", "team2", "score"], day=date)
-    else:
+    try:
+        if reqtype == "p":
+            res = SL.execute_sql(q1, "bplayerrecord", "name", ["name", "record"], day=date)
+        elif reqtype == "n":
+            res = SL.execute_sql(q1, "newsrecord", "title", ["title", "row2_text"], day=date)
+        elif reqtype == "s":
+            res = SL.execute_sql2([q1, q2],"scorerecord", ["team1", "team2"], ["team1", "team2", "score"], day=date)
+        else:
+            return {}
+    except:
         return {}
-
+        
     return res
 
 

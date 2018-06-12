@@ -272,6 +272,7 @@ class SportsLive:
             results = query_job.result()  # Waits for job to complete.
         except Exception as e:
             print(e.args)
+            raise ValueError("error!")
         
         result_list = list(results)
         print(result_list)

@@ -163,7 +163,7 @@ class SportsLive:
         results = query_job.result()  # Waits for job to complete.
         result_list = list(results)
         
-        output_text = str(result_list[0][0]) + "は" + str(result_list[0][1]) + "でした"
+        output_text = str(result_list[0][0]) + "は" + str(result_list[0][1])
 
         json_dict = {"speech": output_text,
                      "displayText": output_text,
@@ -230,7 +230,7 @@ class SportsLive:
         
         print(result_list)
 
-        output_text = str(keyword) + "は" + str(result_list[0][1]) + "でした"
+        output_text = str(keyword) + "は" + str(result_list[0][1])
 
         json_dict = {"speech": output_text,
                      "displayText": output_text,
@@ -277,7 +277,7 @@ class SportsLive:
         result_list = list(results)
         print(result_list)
         print(result_list[0][0])        
-        output_text = "{0}-{1}".format(str(result_list[0][0]),str(result_list[0][1])) + "は" + str(result_list[0][2]) + "でした"
+        output_text = "{0}-{1}".format(str(result_list[0][0]),str(result_list[0][1])) + "は" + str(result_list[0][2]) 
 
         json_dict = {"speech": output_text,
                      "displayText": output_text,

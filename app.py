@@ -104,9 +104,13 @@ def loadsqlRequest(req):
             res = SL.execute_sql2([q1, q2],"scorerecord", ["team1", "team2"], ["team1", "team2", "score"], day=date)
         else:
             return {}
+    except ValueError:
+        return {}
+    except TypeError:
+        return {}
     except:
         return {}
-        
+    
     return res
 
 

@@ -20,6 +20,22 @@ months = {}
 for i, v in enumerate(calendar.month_abbr):
     months[v] = i
 
+pattern = r"(https?|ftp)(:\/\/[-_\.!~*\'()a-zA-Z0-9;\/?:\@&=\+\$,%#]+)"
+rss_news = [r"https://headlines.yahoo.co.jp/rss/jsportsv-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/soccerk-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/bfj-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/nallabout-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/asahik-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/baseballk-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/spnaviv-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/tennisnet-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/nksports-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/gekisaka-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/fullcount-c_spo.xml"]
+
+r_base_url_baseball = [r'https://baseball.yahoo.co.jp/npb/game/']
+r_prop = [r'/top', r'/stats']
+r_base_url_soccer = [r'https://soccer.yahoo.co.jp/jleague/game/live/']
 
 class SportsLive:
     def __init__(self, parent=None):
@@ -363,7 +379,7 @@ class RecordAccumulation:
                                   datetime.datetime.now().strftime('%H%M%S'),
                                   td[3].string + "投球回" +
                                   td[4].string + "投球数で" +
-                                  "被安打が" + td[6].string +
+                                  "被安打が" + td[6].string + "で、" +
                                   td[8].string + "奪三振しています。" +
                                   "防御率は" + td[2].string + "です。"]
                         rec_list.append(record)
@@ -380,7 +396,7 @@ class RecordAccumulation:
         pattern = r'（.*）'
         news_dict = {}
         output_text = ""
-        news_list = [["title", "url", "Full_text", "row1_text", "row2_text", "row3_text", "row4_text", "time"]]
+        news_list = [["title", "url", "Full_text", "row1_text", "row2_text", "row3_text", "row4_text", "time", "date"]]
         news_tuple = []
 
         try:
@@ -419,15 +435,16 @@ class RecordAccumulation:
                 raise NameError("errors?")
 
             for s in soup.find_all("p", class_="ynDetailText"):
-                text += s.get_text()
+                text += s.get_text().replace('\n', '').replace(' ', '')
 
             news.append(text)
             for r_count in range(1, 5):
                 analysis_text = self.summarized(text, r_count)
                 output_text = ''.join(analysis_text)
                 news.append(str(output_text))
-
+            
             news.append(datetime.datetime.now().strftime('%H%M%S'))
+            news.append(datetime.datetime.now().strftime('%Y%m%d'))
             news_list.append(news)
             tnews = tuple(news)
             news_tuple.append(tnews)
@@ -436,14 +453,16 @@ class RecordAccumulation:
     """v2 current"""
     @staticmethod
     def get_jp_s_score(date):
-        rec_list = [["team1", "team2", "date", "time", "score"]]
+        rec_list = [["team1", "team2", "date", "time", "score", "state"]]
         rec_tuple = []
+
 
         i = 1
         strdate = date.strftime('%Y%m%d')
 
         while True:
             record = []
+            state = ""
             # URL構築
             req = requests.get(r_base_url_soccer[0] +
                                strdate +
@@ -466,6 +485,8 @@ class RecordAccumulation:
             except:
                 continue
 
+            divstate = soup.find("div", class_="status")
+            state = divstate.string
             record.append(strdate)
             record.append(datetime.datetime.now().strftime('%H%M%S'))
 
@@ -474,20 +495,27 @@ class RecordAccumulation:
                 td_home = soup.find("td", class_="home goal")
                 td_away = soup.find("td", class_="away goal")
                 record.append(td_home.string + "-" + td_away.string)
+                record.append(state)
+                record_rev = [record[1], record[0], record[2], record[3], td_away.string + "-" + td_home.string, state]
             except:
                 continue
             rec_list.append(record)
+            rec_list.append(record_rev)
+
             rec_tuple.append(tuple(record))
+            rec_tuple.append(tuple(record_rev))
 
             i += 1
 
         return rec_list, rec_tuple
+ 
 
     """v2 current"""
     @staticmethod
     def get_jp_b_score(date):
-        rec_list = [["team1", "team2", "date", "time", "score"]]
+        rec_list = [["team1", "team2", "date", "time", "score", "state"]]
         rec_tuple = []
+
 
         i = 1
         strdate = date.strftime('%Y%m%d')
@@ -496,6 +524,7 @@ class RecordAccumulation:
             record = []
             names = []
             score = []
+            state = ""
             # URL構築
             req = requests.get(r_base_url_baseball[0] +
                                strdate +
@@ -512,32 +541,56 @@ class RecordAccumulation:
 
             # チーム名取得
             try:
-                trs = soup.findAll("tr", class_="yjMS")
+                div = soup.find("div", class_="column-center")
+                em = div.find("em")
+                state = em.string
+
+            except:
+                continue
+            try:
+                trs = soup.findAll("tr", id="tb1")
 
                 for tr in trs:
-                    b_tag = tr.find("b")
+                    b_tag = tr.find("th")
                     names.append(b_tag.string)
                     td = tr.find("td", class_="sum")
                     score.append(td.string)
 
             except:
                 continue
+            try:
+                trs = soup.findAll("tr", id="tb2")
 
+                for tr in trs:
+                    b_tag = tr.find("th")
+                    names.append(b_tag.string)
+                    td = tr.find("td", class_="sum")
+                    score.append(td.string)
+
+            except:
+                continue            
             try:
                 record.append(names[0])
                 record.append(names[1])
                 record.append(strdate)
                 record.append(datetime.datetime.now().strftime('%H%M%S'))
                 record.append(score[0] + "-" + score[1])
+                record.append(state)
+                record_rev = [record[1], record[0], record[2], record[3], score[1] + "-" + score[0], state]
 
                 rec_list.append(record)
+                rec_list.append(record_rev)
+
                 rec_tuple.append(tuple(record))
+                rec_tuple.append(tuple(record_rev))
+
+
             except:
                 pass
             i += 1
 
         return rec_list, rec_tuple
-
+    
     @staticmethod
     def summarized(text, rowcount):
         try:

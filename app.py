@@ -105,9 +105,13 @@ def loadsqlRequest(req):
         else:
             return {}
     except ValueError:
-        return {}
+        return {"speech": "そういったカードの試合は行われていない、もしくは雨天中止だったようです。",
+                "displayText": "そういったカードの試合は行われていない、もしくは雨天中止だったようです。",
+                "source": "apiai-news"}
     except TypeError:
-        return {}
+        return {"speech": "それに対する情報は見つからなかったです。",
+                "displayText": "それに対する情報は見つからなかったです。",
+                "source": "apiai-news"}
     except:
         return {}
     

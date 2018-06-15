@@ -312,6 +312,92 @@ def playerloader_debug():
     return result, 200
 
 
+@app.route('/add-record', methods=['GET'])
+def add_record():
+    json_dict = {}
+    ra = sportslive.RecordAccumulation()
+    day = None
+    """Given an date, records add to table ."""
+
+    try:
+        day = request.args.get('query').split('-')
+        day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
+    except:
+        pass
+
+    if day is None:
+        day = datetime.date.today()
+
+    tdatetime = day.strftime('%Y%m%d')
+
+    # player成績取得フェーズ（野球）
+    try:
+        player_record, player_record_tuple = ra.get_jp_bplayer_record(day)
+        # ra.save_csv(player_record, "player_record.csv")
+        if len(player_record_tuple) != 0:
+            result = load_data("bplayerrecord",
+                           player_record_tuple)
+    except:
+        pass
+
+    # score取得フェーズ(野球)
+    try:
+        score_record, score_record_tuple = ra.get_jp_b_score(day)
+        if len(score_record_tuple) != 0:
+            result = load_data("scorerecord",
+                           score_record_tuple)
+    except:
+        pass
+    score_record_tuple = []
+    # score取得フェーズ(サッカー)
+    try:
+        score_record, score_record_tuple = ra.get_jp_s_score(day)
+        if len(score_record_tuple) != 0:
+            result = load_data("scorerecord",
+                           score_record_tuple)
+    except:
+        pass
+    
+    try:
+        # news取得フェーズ
+        news_record, news_record_tuple = ra.news_check(day)
+        if len(news_record_tuple) != 0:
+            # ra.save_csv(news_record, "news_record.csv")
+            result = load_data("newsrecord",
+                               news_record_tuple)
+    except Exception as e:
+        pass
+    
+    json_dict.update({'completed':
+                         {
+                         'text':player_record_tuple
+                         }}
+                         )
+    encode_json_data = json.dumps(json_dict)
+    return encode_json_data, 200
+
+
+def load_data(table_id, source):
+    json_key = 'continual-grin-206507-54b15b168106.json'
+       
+    try:
+        bigquery_client = bigquery.Client.from_service_account_json(json_key, project='continual-grin-206507')
+        # bigquery_client = bigquery.Client(project='deep-equator-204407')
+        # bigquery_client = bigquery.Client()
+        dataset_ref = bigquery_client.dataset("sportsagent")
+    except:
+        raise NameError('client dont getting')
+        
+    try:
+        table_ref = dataset_ref.table(table_id)
+        table = bigquery_client.get_table(table_ref)
+        errors = bigquery_client.insert_rows(table, source) 
+    except:
+        raise NameError(type(source))
+    
+    return errors
+
+
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
 

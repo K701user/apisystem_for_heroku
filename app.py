@@ -329,7 +329,7 @@ def add_record():
         day = datetime.date.today()
 
     tdatetime = day.strftime('%Y%m%d')
-
+    print(day)
     # player成績取得フェーズ（野球）
     try:
         player_record, player_record_tuple = ra.get_jp_bplayer_record(day)

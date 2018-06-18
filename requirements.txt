@@ -7,3 +7,4 @@ google-cloud-storage==1.8.0
 janome==0.3.6
 BeautifulSoup4==4.6.0
 redis==2.10.6
+rq==0.11.0

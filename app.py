@@ -33,9 +33,14 @@ from flask import Flask
 from flask import request
 from flask import make_response
 
+from rq import Queue
+from worker import conn
+from bottle import route, run
+
 # Flask app should start in global layout
 app = Flask(__name__)
 SL = sportslive.SportsLive()
+q = Queue(connection=conn)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -314,6 +319,10 @@ def playerloader_debug():
 
 @app.route('/add-record', methods=['GET'])
 def add_record():
+    result = q.enqueue(background_process)
+    return result
+
+def background_process():
     json_dict = {}
     ra = sportslive.RecordAccumulation()
     day = None

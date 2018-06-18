@@ -7,7 +7,7 @@ import random
 import re
 
 import requests
-
+from bs4 import BeautifulSoup
 from janome.tokenizer import Tokenizer
 from google.cloud import bigquery
 from google.oauth2 import service_account

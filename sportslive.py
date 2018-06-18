@@ -265,6 +265,7 @@ class SportsLive:
         
         if type(fields) is list:
             field = ",".join(fields)
+        field = field + ",state "
 
         for f,k in zip(keyfields,keywords):
             print(f + ":" + k)
@@ -293,9 +294,15 @@ class SportsLive:
         
         result_list = list(results)
         print(result_list)
-        print(result_list[0][0])        
-        output_text = "{0}-{1}".format(str(result_list[0][0]),str(result_list[0][1])) + "は" + str(result_list[0][2]) 
-
+        print(result_list[0][0])
+        
+        if "中止" in result_list:
+            output_text = "そのカードの試合は" + result_list[0][-1] + "だったようです。"
+        elif "試合終了" in result_list:
+            output_text = "{0}-{1}".format(str(result_list[0][0]),str(result_list[0][1])) + "は" + str(result_list[0][2]) 
+        else:
+            output_text = "そのカードの試合は、まだ始まってません。"
+            
         json_dict = {"speech": output_text,
                      "displayText": output_text,
                      "source": "apiai-player"}
